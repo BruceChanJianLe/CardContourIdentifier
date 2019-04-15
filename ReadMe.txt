@@ -1,1 +1,1 @@
-Read me to understand the code.
+This file describe how the algorithm works and how to use it.
