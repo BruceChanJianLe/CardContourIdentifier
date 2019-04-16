@@ -1,2 +1,3 @@
 This file describe how the algorithm works and how to use it.
-Maybe I will have to change this in the future.
+
+Currently, I am working on Phase1, which is more on basic scenario for credit card detection.
