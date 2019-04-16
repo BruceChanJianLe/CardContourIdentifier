@@ -3,17 +3,14 @@ import numpy as np
 
 
 # Import image to test, covert to grayscale
-color = cv2.imread('N6.jpg', 1)
+color = cv2.imread('N1.jpg', 1)
 img = cv2.cvtColor(color, cv2.COLOR_BGR2GRAY)
 
 # Blur Image
-blur = cv2.GaussianBlur(img, (19, 19), 0)
-blur2 = cv2.medianBlur(img, 9)
+blur = cv2.GaussianBlur(img, (13, 13), 0)
 
 # Edge Detection
-edges = cv2.Canny(blur, 70, 70)
-# blur2 = cv2.medianBlur(edges, 3)
-# edges2 = cv2.Canny(blur2, 30, 30)
+edges = cv2.Canny(blur, 40, 40)
 cv2.imwrite('Canny.jpg', edges)
 
 # Find Contour
@@ -37,13 +34,7 @@ cv2.polylines(color2, [result], True, color, thickness)
 # cv2.drawContours(color2, result, index, color, thickness)
 
 # Save Image
-cv2.imwrite('ResultN6_192020.jpg', color2)
-
-print(result)
-result.sort()
-print('ends here\n')
-print(result)
-
+cv2.imwrite('ResultN1.jpg', color2)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
