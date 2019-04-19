@@ -1,3 +1,5 @@
-This file describe how the algorithm works and how to use it.
+# This file describe how the algorithm works and how to use it.
 
-Currently, I am working on Phase1, which is more on basic scenario for credit card detection.
+Phase 1 has been completed. Please check the folder Phase 1 for the detail.
+
+Phase 2 will begin soon.
