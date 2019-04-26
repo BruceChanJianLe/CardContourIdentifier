@@ -15,4 +15,4 @@ The final file is in the Phase2 folder under the name Contour_Final.py
 3. Place Contour_Final.py in the same folder.
 4. Go to terminal (Linux) and locate to the folder where you place Contour_Final.py.
 5. Type 'python3 Contour_Final.py'
-6. The processed images will be renamed with Result_ in front of the file name.
+6. The processed images will be renamed with 'Result_' in front of the file name.
