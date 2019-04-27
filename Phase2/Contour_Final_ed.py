@@ -86,12 +86,19 @@ for filename in os.listdir(path):
                 max_con = len(i)
                 result = i
 
-        # Determine if the ratio of contour belongs to a card 1.45 < ratio <1.7
+        # Determine if the ratio of contour belongs to a card 1.4 < ratio <1.7
         rect = cv2.minAreaRect(result)
-        ratio = rect[1][0]/rect[1][1]                       # For Debugging purpose /rect[1][0]/width /rect[1][1]/height
+        if rect[1][0] > rect[1][1]:
+            width = rect[1][0]
+            height = rect[1][1]
+        else:
+            width = rect[1][1]
+            height = rect[1][0]
+        ratio = width/height                       # For Debugging purpose /rect[1][0]/width /rect[1][1]/height
+        area_con = cv2.contourArea(result)
+        area = width * height
 
-        if (rect[1][0] < 1250) and (rect[1][1] < 1250) and (rect[1][0]/rect[1][1] > 1.45) and\
-                (rect[1][0]/rect[1][1] < 1.7):# and (cv2.contourArea(result) > (rect[1][0] * rect[1][1]) * 0.85):
+        if (ratio > 1.4) and (ratio < 1.7) and (area_con > area * 0.9):
 
             # Draw obtained contour
             ori = img.copy()                # Make a deep copy of the original image
@@ -105,14 +112,22 @@ for filename in os.listdir(path):
             # Save the result as a new file
             cv2.imwrite(f'Result_{filename}', ori)
             print('output', f'Result_{filename}')
+
         else:
             # Try to find the contour by approximating polygonal curves
             epsilon = 0.115 * cv2.arcLength(result, True)
             approx = cv2.approxPolyDP(result, epsilon, True)
             rect = cv2.minAreaRect(approx)
 
-            if (len(approx) == 4) and (rect[1][1] != 0) and (rect[1][0]/rect[1][1] > 1.45) and \
-                    (rect[1][0]/rect[1][1] < 1.7):
+            if rect[1][0] > rect[1][1]:
+                width = rect[1][0]
+                height = rect[1][1] if rect[1][1] != 0 else 1.0
+            else:
+                width = rect[1][1]
+                height = rect[1][0] if rect[1][0] != 0 else 1.0
+            ratio = width / height              # For Debugging purpose /rect[1][0]/width /rect[1][1]/height
+
+            if (height != 0) and (ratio > 1.4) and (ratio < 1.7) and (area_con > area * 0.85):
 
                 # Draw obtained contour
                 ori = img.copy()                    # Make a deep copy of the original image
