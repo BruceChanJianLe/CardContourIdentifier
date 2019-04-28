@@ -88,17 +88,20 @@ for filename in os.listdir(path):
 
         # Determine if the ratio of contour belongs to a card 1.4 < ratio <1.7
         rect = cv2.minAreaRect(result)
-        if rect[1][0] > rect[1][1]:
+        if rect[1][0] > rect[1][1]:                # Assigning the larger one as width
             width = rect[1][0]
             height = rect[1][1]
         else:
             width = rect[1][1]
             height = rect[1][0]
         ratio = width/height                       # For Debugging purpose /rect[1][0]/width /rect[1][1]/height
-        area_con = cv2.contourArea(result)
-        area = width * height
+        area_con = cv2.contourArea(result)         # For Debugging purpose
+        area = width * height                      # For Debugging purpose
 
-        if (ratio > 1.4) and (ratio < 1.7) and (area_con > area * 0.9):
+        # Extent is the ratio of contour area to bounding rectangle area.
+        extent = area_con/area
+
+        if (ratio > 1.4) and (ratio < 1.7) and (extent > 0.87):
 
             # Draw obtained contour
             ori = img.copy()                # Make a deep copy of the original image
@@ -108,7 +111,7 @@ for filename in os.listdir(path):
 
             # Draw the final contour
             cv2.drawContours(ori, [result], index, color, thickness)
-            print([len(i) for i in C])
+            # print([len(i) for i in C])
             # Save the result as a new file
             cv2.imwrite(f'Result_{filename}', ori)
             print('output', f'Result_{filename}')
@@ -119,15 +122,20 @@ for filename in os.listdir(path):
             approx = cv2.approxPolyDP(result, epsilon, True)
             rect = cv2.minAreaRect(approx)
 
-            if rect[1][0] > rect[1][1]:
+            if rect[1][0] > rect[1][1]:              # Assigning the larger one as width
                 width = rect[1][0]
                 height = rect[1][1] if rect[1][1] != 0 else 1.0
             else:
                 width = rect[1][1]
                 height = rect[1][0] if rect[1][0] != 0 else 1.0
-            ratio = width / height              # For Debugging purpose /rect[1][0]/width /rect[1][1]/height
+            ratio = width / height                  # For Debugging purpose /rect[1][0]/width /rect[1][1]/height
+            area_con = cv2.contourArea(approx)      # For Debugging purpose
+            area = width * height                   # For Debugging purpose
 
-            if (height != 0) and (ratio > 1.4) and (ratio < 1.7) and (area_con > area * 0.85):
+            # Extent is the ratio of contour area to bounding rectangle area.
+            extent = area_con / area
+
+            if (height != 0) and (ratio > 1.4) and (ratio < 1.7) and (extent > 0.87):
 
                 # Draw obtained contour
                 ori = img.copy()                    # Make a deep copy of the original image
@@ -138,7 +146,7 @@ for filename in os.listdir(path):
                 # Draw the final contour
                 cv2.drawContours(ori, [approx], index, color, thickness)
 
-                print([len(i) for i in C])
+                # print([len(i) for i in C])
                 # Save the result as a new file
                 cv2.imwrite(f'Result_{filename}', ori)
                 print('output', f'Result_{filename}')
@@ -146,3 +154,4 @@ for filename in os.listdir(path):
             else:
                 print(f'Unable to detect the right contour for {filename}.')
                 continue
+# Last edited on 28 April 2019
